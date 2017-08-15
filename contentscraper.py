@@ -46,7 +46,7 @@ class ContentScraper():
             print temptitle
 
     def _output_result(self):
-        print "Possible pages:\n"
+        print "\n\nPossible pages:\n"
         for items in self.pages:
             print items
         
