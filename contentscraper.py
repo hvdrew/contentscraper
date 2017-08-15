@@ -8,6 +8,8 @@ class ContentScraper():
     url = None
     html = None
     soup = None
+    file = "test.txt"
+    file_obj = None
     text = None
     links = []
     pages = set()
@@ -30,22 +32,34 @@ class ContentScraper():
 
         for items in self.links:
             self.pages.add(items['href'])
+        
+        self.pages.remove('#')
 
     def _kill_extra_whitespace(self):
         self.text = re.sub(r'\n\s*\n', r'\n\n', self.soup.get_text().strip(), flags=re.M)
+
+    def _page_crawler(self):
+        for page in self.pages:
+            temphtml = urlopen(page).read()
+            tempsoup = bs(temphtml, 'lxml')
+            temptitle = tempsoup.find_all('title')
+            print temptitle
 
     def _output_result(self):
         print "Possible pages:\n"
         for items in self.pages:
             print items
-        #print "\nHTML:\n\n", self.text
         
     def run(self):
         self._scrape_html()
         self._filter_html()
         self._kill_extra_whitespace()
+        self._page_crawler()
         self._output_result()
 
 if __name__ == '__main__':
     scrape_content = ContentScraper(sys.argv[1])
     scrape_content.run()
+
+
+    # Need to use the pages list to crawl each page
