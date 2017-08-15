@@ -60,6 +60,3 @@ class ContentScraper():
 if __name__ == '__main__':
     scrape_content = ContentScraper(sys.argv[1])
     scrape_content.run()
-
-
-    # Need to use the pages list to crawl each page
