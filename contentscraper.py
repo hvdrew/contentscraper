@@ -35,6 +35,8 @@ class ContentScraper():
         for items in self.links:
             if items['href'].find(self.urlstring) == -1 and 'http' in items['href']:
                 pass
+            elif items['href'].find('mailto:') >=0:
+                pass
             elif items['href'].find(self.urlstring) >= 0:
                 self.pages.add(items['href'])
             else:
