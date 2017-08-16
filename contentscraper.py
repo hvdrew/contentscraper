@@ -57,10 +57,12 @@ class ContentScraper():
     def _page_crawler(self):
         self._cleanup_pages()
         for page in self.pages:
-            temphtml = urlopen(page).read()
+            tempconn = urlopen(page)
+            temphtml = tempconn.read()
             tempsoup = bs(temphtml, 'lxml')
             temptitle = tempsoup.find_all('title')
             print temptitle
+            tempconn.close()
 
     def _output_result(self):
         print "\n\nPossible pages:\n"
