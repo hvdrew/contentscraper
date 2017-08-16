@@ -1,4 +1,4 @@
-# version 0.1
+# version 0.2
 from bs4 import BeautifulSoup as bs
 from urllib import urlopen
 import sys
@@ -33,12 +33,19 @@ class ContentScraper():
         for items in self.links:
             self.pages.add(items['href'])
         
-        self.pages.remove('#')
+    def _cleanup_pages(self):
+        templist = list(self.pages)
+        for page in templist:
+            if '#' in page:
+                templist.remove(page)
+
+        self.pages = set(templist)
 
     def _kill_extra_whitespace(self):
         self.text = re.sub(r'\n\s*\n', r'\n\n', self.soup.get_text().strip(), flags=re.M)
 
     def _page_crawler(self):
+        self._cleanup_pages()
         for page in self.pages:
             temphtml = urlopen(page).read()
             tempsoup = bs(temphtml, 'lxml')
@@ -54,7 +61,8 @@ class ContentScraper():
         self._scrape_html()
         self._filter_html()
         self._kill_extra_whitespace()
-        self._page_crawler()
+        #self._page_crawler()
+        self._cleanup_pages()
         self._output_result()
 
 if __name__ == '__main__':
